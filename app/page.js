@@ -14,12 +14,12 @@ export default function Home() {
 
     // This effect runs when the theme changes to apply the class to the <html> tag
     useEffect(() => {
-        const root = window.document.documentElement;
-        // Remove the previous theme class
-        root.classList.remove('light', 'dark');
-        // Add the new theme class
-        root.classList.add(theme);
-    }, [theme]);
+        if (typeof window !== "undefined") {   // ✅ ensure only runs in browser
+      const root = window.document.documentElement;
+      root.classList.remove("light", "dark");
+      root.classList.add(theme);
+    }
+  }, [theme]);
 
 
     return (
