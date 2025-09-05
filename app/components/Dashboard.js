@@ -2,6 +2,7 @@
 import { useRef } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { Download } from 'lucide-react';
 import SummaryCard from './SummaryCard';
 import TimeFilter from './TimeFilter';
 import StatCard from './StatCard';
@@ -10,7 +11,7 @@ import SipBusinessChart from './SipBusinessChart';
 import MonthlyMisChart from './MonthlyMisChart';
 import { summaryData, statCardData as statData } from '../data/mockData';
 
-const Dashboard = () => {
+const Dashboard = ({ theme }) => {
     // A ref to the dashboard container element for PDF generation
     const dashboardRef = useRef(null);
 
@@ -19,10 +20,15 @@ const Dashboard = () => {
         const input = dashboardRef.current;
         if (!input) return;
 
+        // Determine background color based on the current theme for html2canvas
+        // This avoids the "oklch" parsing error with newer Tailwind versions.
+        const backgroundColor = theme === 'dark' ? '#111827' : '#f3f4f6'; // gray-900 and gray-100
+
         // Use html2canvas to capture the dashboard as an image
-        html2canvas(input, { 
+        html2canvas(input, {
             scale: 2, // Increase scale for better resolution
-            useCORS: true 
+            useCORS: true,
+            backgroundColor: backgroundColor, // Explicitly set background color to avoid issues
         }).then(canvas => {
             const imgData = canvas.toDataURL('image/png');
             // A4 dimensions in 'mm': 210mm wide, 297mm high
@@ -47,7 +53,7 @@ const Dashboard = () => {
                 imgHeight = pdfHeight;
                 imgWidth = imgHeight * ratio;
             }
-            
+
             // Center the image on the PDF page
             const x = (pdfWidth - imgWidth) / 2;
             const y = (pdfHeight - imgHeight) / 2;
@@ -59,12 +65,21 @@ const Dashboard = () => {
 
 
     return (
-        <div className="p-4 md:p-8 space-y-6">
-            {/* The ref is attached to this container, which will be captured for the PDF */}
+        <div className="space-y-6">
+            <div className="flex justify-end">
+                <button
+                    onClick={handleDownloadPdf}
+                    className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-red-600 rounded-md hover:bg-red-700 transition-colors"
+                >
+                    <Download size={16} />
+                    Download PDF
+                </button>
+            </div>
+            {/* The ref is now on this container, which holds the entire dashboard for PDF capture */}
             <div ref={dashboardRef} className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                    <SummaryCard data={summaryData.aum} />
-                    <SummaryCard data={summaryData.sip} />
+                    <SummaryCard title="AUM" data={summaryData.aum} />
+                    <SummaryCard title="SIP" data={summaryData.sip} />
                 </div>
                 <TimeFilter />
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-6">
@@ -87,5 +102,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
 

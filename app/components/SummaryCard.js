@@ -1,6 +1,7 @@
 const SummaryCard = ({ title, data }) => {
     const isIncrease = data.changeType === 'increase';
     const changeColor = isIncrease ? 'text-green-500' : 'text-gray-500';
+    const trendIcon = isIncrease ? '▲' : '▼';
 
     return (
         <div className="card">
@@ -10,8 +11,10 @@ const SummaryCard = ({ title, data }) => {
             </div>
             <div className="flex justify-between items-end">
                 <div>
-                    <h2 className="text-3xl font-bold text-gray dark:text-white">{title} {data.value}</h2>
-                    <p className={`text-sm font-semibold ${changeColor}`}>{data.change}</p>
+                    <h2 className="text-3xl font-bold text-gray-800 dark:text-white">{title} {data.value}</h2>
+                    <p className={`text-sm font-semibold ${changeColor}`}>
+                        {trendIcon} {data.change}
+                    </p>
                 </div>
                 <button className="text-xs font-semibold text-green-500 hover:underline">View Trend</button>
             </div>
