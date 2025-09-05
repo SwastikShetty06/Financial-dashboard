@@ -10,7 +10,9 @@ import {
     PointElement,
     Title,
     Tooltip,
-    Legend
+    Legend,
+    BarController,
+    LineController
 } from 'chart.js';
 import { sipBusinessData } from '../data/mockData';
 
@@ -22,7 +24,9 @@ ChartJS.register(
     PointElement,
     Title,
     Tooltip,
-    Legend
+    Legend,
+    BarController,
+    LineController
 );
 
 const SipBusinessChart = () => {
