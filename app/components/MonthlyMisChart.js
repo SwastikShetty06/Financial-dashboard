@@ -119,4 +119,3 @@ const MonthlyMisChart = () => {
 
 export default MonthlyMisChart;
 
-s
