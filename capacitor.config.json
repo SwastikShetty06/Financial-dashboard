@@ -1,7 +1,7 @@
 {
   "appId": "com.example.wealthelite",
   "appName": "Wealth Elite",
-  "webDir": "public",
+  "webDir": "out",
   "server": {
     "androidScheme": "https"
   }

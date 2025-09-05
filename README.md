@@ -1,36 +1,124 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Wealth Elite - Financial Dashboard
+
+This project is a recreation of a financial dashboard UI, built as a
+frontend development assignment. The dashboard is fully responsive and
+includes features like dynamic charts, a dark mode toggle, and the
+ability to export the view as a PDF. It has also been configured to be
+converted into native Android/iOS applications using Capacitor.
+
+**Live Demo:**
+[financial-dashboard-s.netlify.app](https://financial-dashboard-s.netlify.app)
+
+**GitHub Repository:**
+[github.com/swastikshetty06/financial-dashboard](https://github.com/swastikshetty06/financial-dashboard)
+
+**Resume:** [View
+Resume](https://docs.google.com/document/d/1oglL-VDXEf4GA8_ZvxfxaLPEH2-B6hpvityEXZbePJ8/edit?usp=sharing)
+
+## Features
+
+-   **Responsive Design:** The dashboard is fully responsive and
+    accessible on mobile, tablet, and desktop devices.
+-   **Interactive Charts:** Visual data representation using Chart.js,
+    including a bubble chart for client distribution, a mixed bar and
+    line chart for SIP business, and a multi-line area chart for monthly
+    MIS.
+-   **Dark Mode:** A theme toggle allows users to switch between light
+    and dark modes for better viewing comfort.
+-   **PDF Export:** Users can download a PDF snapshot of the entire
+    dashboard with a single click.
+-   **Mobile Ready:** Built with Capacitor to enable easy conversion
+    into native Android and iOS applications from the same Next.js
+    codebase.
+-   **Component-Based Architecture:** Developed with reusable React
+    components for maintainability and scalability.
+
+## Tech Stack
+
+-   **Framework:** Next.js 15 (App Router)
+-   **Styling:** Tailwind CSS
+-   **UI Components:** React 19
+-   **Charting:** Chart.js with react-chartjs-2
+-   **Icons:** Lucide React
+-   **PDF Generation:** jsPDF & html2canvas
+-   **Mobile Conversion:** Capacitor
 
 ## Getting Started
 
-First, run the development server:
+Follow these instructions to set up and run the project on your local
+machine.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Prerequisites
+
+-   Node.js (v18.18.0 or later)
+-   npm, yarn, or pnpm
+
+### Installation & Setup
+
+Clone the repository:
+
+``` bash
+git clone https://github.com/swastikshetty06/financial-dashboard.git
+cd financial-dashboard
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Install dependencies:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+``` bash
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Run the development server:
 
-## Learn More
+``` bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Open <http://localhost:3000> in your browser to see the result.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Building for Production and Mobile
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Web Production Build
 
-## Deploy on Vercel
+To create a production-ready build of the web application, run:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+``` bash
+npm run build
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This will generate an optimized static site in the `out` folder, which
+is ready for deployment.
+
+### Mobile (Android/iOS) with Capacitor
+
+This project is configured to be wrapped into a native mobile app.
+
+Add a platform (run once):
+
+``` bash
+# For Android
+npx cap add android
+
+# For iOS (macOS required)
+npx cap add ios
+```
+
+Sync the web build with the native project:
+
+``` bash
+npm run build
+npx cap sync
+```
+
+Open the native project in its IDE:
+
+``` bash
+# For Android (opens in Android Studio)
+npx cap open android
+
+# For iOS (opens in Xcode)
+npx cap open ios
+```
+
+From the native IDE, you can build, run, and deploy the app to a
+simulator or a physical device.

@@ -8,22 +8,34 @@ module.exports = {
   ],
   darkMode: 'class',
   theme: {
+    // This REPLACES the default color palette with a compatible one.
+    // This is the most critical part of the fix.
+    colors: {
+      transparent: 'transparent',
+      current: 'currentColor',
+      black: '#000',
+      white: '#fff',
+      gray: colors.slate,
+      red: colors.red,
+      orange: colors.orange,
+      amber: colors.amber,
+      yellow: colors.yellow,
+      lime: colors.lime,
+      green: colors.emerald,
+      emerald: colors.emerald,
+      teal: colors.teal,
+      cyan: colors.cyan,
+      sky: colors.sky,
+      blue: colors.blue,
+      indigo: colors.indigo,
+      violet: colors.violet,
+      purple: colors.purple,
+      fuchsia: colors.fuchsia,
+      pink: colors.pink,
+      rose: colors.rose,
+    },
     extend: {
-      // By extending the theme with the default hex-based colors, we ensure
-      // that html2canvas can parse them correctly, avoiding the "oklch" error.
-      colors: {
-        // You can customize these or use the full default palette
-        transparent: 'transparent',
-        current: 'currentColor',
-        black: colors.black,
-        white: colors.white,
-        gray: colors.gray,
-        red: colors.red,
-        orange: colors.orange,
-        green: colors.emerald, // Using emerald for a nice green shade
-        blue: colors.blue,
-        yellow: colors.amber,
-      },
+      // Any other custom theme extensions can stay here.
     },
   },
   plugins: [],

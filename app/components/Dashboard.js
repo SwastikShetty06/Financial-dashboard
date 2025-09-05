@@ -12,26 +12,42 @@ import MonthlyMisChart from './MonthlyMisChart';
 import { summaryData, statCardData as statData } from '../data/mockData';
 
 const Dashboard = ({ theme }) => {
-    // A ref to the dashboard container element for PDF generation
     const dashboardRef = useRef(null);
 
-    // Function to handle the PDF download process
     const handleDownloadPdf = () => {
         const input = dashboardRef.current;
         if (!input) return;
 
-        // Determine background color based on the current theme for html2canvas
-        // This avoids the "oklch" parsing error with newer Tailwind versions.
-        const backgroundColor = theme === 'dark' ? '#111827' : '#f3f4f6'; // gray-900 and gray-100
+        // Temporarily override styles for PDF generation
+        const originalStyles = new Map();
+        const elements = input.getElementsByTagName('*');
+        for (let i = 0; i < elements.length; i++) {
+            const element = elements[i];
+            const style = window.getComputedStyle(element);
+            const color = style.getPropertyValue('color');
+            const bgColor = style.getPropertyValue('background-color');
 
-        // Use html2canvas to capture the dashboard as an image
+            originalStyles.set(element, {
+                color: element.style.color,
+                backgroundColor: element.style.backgroundColor
+            });
+
+            if (color.includes('oklch')) {
+                element.style.color = 'rgb(0, 0, 0)'; // Fallback to black
+            }
+            if (bgColor.includes('oklch')) {
+                element.style.backgroundColor = 'rgb(255, 255, 255)'; // Fallback to white
+            }
+        }
+
+        const backgroundColor = theme === 'dark' ? '#1f2937' : '#f9fafb';
+
         html2canvas(input, {
-            scale: 2, // Increase scale for better resolution
+            scale: 2,
             useCORS: true,
-            backgroundColor: backgroundColor, // Explicitly set background color to avoid issues
+            backgroundColor: backgroundColor,
         }).then(canvas => {
             const imgData = canvas.toDataURL('image/png');
-            // A4 dimensions in 'mm': 210mm wide, 297mm high
             const pdf = new jsPDF({
                 orientation: 'landscape',
                 unit: 'mm',
@@ -44,25 +60,27 @@ const Dashboard = ({ theme }) => {
             const canvasHeight = canvas.height;
             const ratio = canvasWidth / canvasHeight;
 
-            // Calculate image dimensions to fit the PDF page while maintaining aspect ratio
             let imgWidth = pdfWidth;
             let imgHeight = imgWidth / ratio;
 
-            // If the calculated height is greater than the PDF height, adjust based on height instead
             if (imgHeight > pdfHeight) {
                 imgHeight = pdfHeight;
                 imgWidth = imgHeight * ratio;
             }
 
-            // Center the image on the PDF page
             const x = (pdfWidth - imgWidth) / 2;
             const y = (pdfHeight - imgHeight) / 2;
 
             pdf.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight);
             pdf.save('financial-dashboard.pdf');
+
+            // Restore original styles
+            originalStyles.forEach((style, element) => {
+                element.style.color = style.color;
+                element.style.backgroundColor = style.backgroundColor;
+            });
         });
     };
-
 
     return (
         <div className="space-y-6">
@@ -75,7 +93,6 @@ const Dashboard = ({ theme }) => {
                     Download PDF
                 </button>
             </div>
-            {/* The ref is now on this container, which holds the entire dashboard for PDF capture */}
             <div ref={dashboardRef} className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                     <SummaryCard title="AUM" data={summaryData.aum} />
@@ -102,4 +119,3 @@ const Dashboard = ({ theme }) => {
 };
 
 export default Dashboard;
-
